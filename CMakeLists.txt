@@ -53,3 +53,17 @@ endif()
 # ---- Пример по варианту ----
 add_executable(variant_16 examples/variant_16.cpp)
 target_link_libraries(variant_16 PRIVATE arraylib)
+
+
+include(CTest)
+if (BUILD_TESTING)
+    add_executable(test_unit tests/test_unit.cpp)
+    target_link_libraries(test_unit PRIVATE arraylib)
+# Отключаем NDEBUG, чтобы assert работал и в Release
+    target_compile_options(test_unit PRIVATE -UNDEBUG)
+    add_test(NAME unit COMMAND test_unit)
+    add_executable(test_integration tests/test_integration.cpp)
+    target_link_libraries(test_integration PRIVATE arraylib)
+    target_compile_options(test_integration PRIVATE -UNDEBUG)
+    add_test(NAME integration COMMAND test_integration)
+endif()
